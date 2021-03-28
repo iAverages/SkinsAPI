@@ -1,4 +1,4 @@
-# mc-skins-api
+# SkinsAPI
 
 A simple and fast Minecraft avatar API built with JS, ExpressJs and MongoDB.
 
