@@ -95,8 +95,9 @@ async function getHead(name, width = 100, height = 100) {
 
 async function getDataFromMojang(name) {
     try{
+        let userID;
         if (!isUUID(name)) {
-            const userID = (await axios.get(`https://api.mojang.com/users/profiles/minecraft/${name}`)).data.id;
+            userID = (await axios.get(`https://api.mojang.com/users/profiles/minecraft/${name}`)).data.id;
             if (userID == null) 
                 return { success: false };
         } else
