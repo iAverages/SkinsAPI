@@ -35,4 +35,4 @@ Example: `https://skins.danielraybone.com/head/jeb_?width=230&height=100`
 
 If a invalid name or UUID is given, steve will be returned instead.
 
-You can also add `?return=base64` as a parameter to have a base64 version of the image returned. (Only /skin route)
+You can also add `?return=base64` as a parameter to have a base64 version of the image returned. (Only /head route)
