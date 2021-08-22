@@ -23,6 +23,8 @@ A public endpoint for this can be found at `https://skins.danielraybone.com/`.
 
 `/head/:name` - Request the head for a user.  
 `/skin/:name` - Request the raw skin for a user.
+`/3d/skin/:name` - Request the 3D skin for a user.
+`/3d/head/:name` - Request the 3D head for a user.
 
 All endpoints (but skin) can return a custom size. Append ?width=\<size in px> to the request. This can also be done with height. (If only the width/height is given, both are set to the same value given)  
 By default, the head endpoint returns a 300x300 px head.  
