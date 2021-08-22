@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const path = require("path");
 const rfs = require('rotating-file-stream');
 const log = require("./modules/logger");
-const { skin, head } = require("./routes");
+const { skin, head, _3d } = require("./routes");
 const app = express();
 require("dotenv").config();
 const port = process.env.PORT || 3000
@@ -32,6 +32,7 @@ app.get("/", async (req, res) => res.redirect(302, process.env.REDIRECT));
 // Routes
 app.use("/skin", skin);
 app.use("/head", head);
+app.use("/3d", _3d);
 
 app.use((error, req, res, next) => {
     const { statusCode } = error;
