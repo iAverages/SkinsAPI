@@ -4,7 +4,7 @@ const monk = require("monk")("localhost/skinsapi");
 const Jimp = require('jimp');
 const { isUUID } = require("./uuidv4");
 const mongoSkins = monk.get("skins");
-const MinecraftSkin = require('../modules/mess2.js');
+const MinecraftSkin = require('./minecraftskin.js');
 
 const steveDefault = { profileName: 'SteveDefault', textures: { SKIN: { url: 'https://dannn.net/l4lDJeZp' } } }
 

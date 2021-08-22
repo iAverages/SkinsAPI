@@ -134,105 +134,105 @@ class MinecraftSkin {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.save();
 
-        ctx.transform(1,-0.5,0,1,baseOffsetL + side * 6 / 8,baseOffsetT + side * 23 / 8 - 1 - sB / 16);
-        ctx.drawImage(img,hB + 1,hB * 5 + 1,hB - 2,hB * 3 - 2,0,0,w / 2,h * 1.5);
+        ctx.transform(1, -0.5, 0, 1, baseOffsetL + side * 6 / 8, baseOffsetT + side * 23 / 8 - 1 - sB / 16);
+        ctx.drawImage(img, hB + 1, hB * 5 + 1, hB - 2, hB * 3 - 2, 0, 0, w / 2, h * 1.5);
         ctx.restore();
         ctx.save();
 
         if (this.type == TYPE_OLD) {
-            ctx.transform(-1,0.5,0,1,baseOffsetL + side * 13 / 8 + sB / 7,baseOffsetT + side * 19 / 8 + sB / 3 - 0.5 - sB / 16);
-            ctx.drawImage(img,hB,hB * 5 + 1,hB - 2,hB * 3 - 2,0,0,w / 2,h * 1.5);
+            ctx.transform(-1, 0.5, 0, 1, baseOffsetL + side * 13 / 8 + sB / 7, baseOffsetT + side * 19 / 8 + sB / 3 - 0.5 - sB / 16);
+            ctx.drawImage(img, hB, hB * 5 + 1, hB - 2, hB * 3 - 2, 0, 0, w / 2, h * 1.5);
             ctx.restore();
             ctx.save();
         } else {
-            ctx.transform(1,-0.5,0,1,baseOffsetL + side * 9 / 8 + sB / 2,baseOffsetT + side * 21 / 8 + sB / 8 - sB / 16);
-            ctx.drawImage(img,hB * 5 + 1,hB * 13 + 1,hB - 2,hB * 3 - 2,0,0,w / 2,h * 1.5);
+            ctx.transform(1, -0.5, 0, 1, baseOffsetL + side * 9 / 8 + sB / 2, baseOffsetT + side * 21 / 8 + sB / 8 - sB / 16);
+            ctx.drawImage(img, hB * 5 + 1, hB * 13 + 1, hB - 2, hB * 3 - 2, 0, 0, w / 2, h * 1.5);
             ctx.restore();
             ctx.save();
 
-            ctx.transform(1,-0.5,0,1,baseOffsetL + side * 9 / 8 + sB / 2,baseOffsetT + side * 21 / 8 - sB / 8);
-            ctx.drawImage(img,hB + 1,hB * 13 + 1,hB - 2,hB * 3 - 2,0,0,(w / 2) * 1.1,(h * 1.5) * 1.1);
+            ctx.transform(1, -0.5, 0, 1, baseOffsetL + side * 9 / 8 + sB / 2, baseOffsetT + side * 21 / 8 - sB / 8);
+            ctx.drawImage(img, hB + 1, hB * 13 + 1, hB - 2, hB * 3 - 2, 0, 0, (w / 2) * 1.1, (h * 1.5) * 1.1);
             ctx.restore();
             ctx.save();
         }
 
-        ctx.transform(1,0.5,0,1,baseOffsetL + side * 2 / 8 + sB / 2,baseOffsetT + side * 21 / 8 + sB / 8 - sB / 16);
-        ctx.drawImage(img,1,hB * 5 + 1,hB - 2,hB * 3 - 2,0,0,w / 2,h * 1.5);
+        ctx.transform(1, 0.5, 0, 1, baseOffsetL + side * 2 / 8 + sB / 2, baseOffsetT + side * 21 / 8 + sB / 8 - sB / 16);
+        ctx.drawImage(img, 1, hB * 5 + 1, hB - 2, hB * 3 - 2, 0, 0, w / 2, h * 1.5);
         ctx.restore();
         ctx.save();
 
         if (this.type == TYPE_NEW) {
-            ctx.transform(1,-0.5,0,1,baseOffsetL + side * 6 / 8 - 1,baseOffsetT + side * 23 / 8 - sB / 4);
-            ctx.drawImage(img,hB + 1,hB * 9 + 1,hB - 2,hB * 3 - 2,0,0,(w / 2) * 1.1,(h * 1.5) * 1.1);
+            ctx.transform(1, -0.5, 0, 1, baseOffsetL + side * 6 / 8 - 1, baseOffsetT + side * 23 / 8 - sB / 4);
+            ctx.drawImage(img, hB + 1, hB * 9 + 1, hB - 2, hB * 3 - 2, 0, 0, (w / 2) * 1.1, (h * 1.5) * 1.1);
             ctx.restore();
             ctx.save();
 
-            ctx.transform(1,0.5,0,1,baseOffsetL + side * 2 / 8,baseOffsetT + side * 21 / 8 - sB / 4);
-            ctx.drawImage(img,1,hB * 9 + 1,hB - 2,hB * 3 - 2,0,0,(w / 2) * 1.1,(h * 1.5) * 1.1);
+            ctx.transform(1, 0.5, 0, 1, baseOffsetL + side * 2 / 8, baseOffsetT + side * 21 / 8 - sB / 4);
+            ctx.drawImage(img, 1, hB * 9 + 1, hB - 2, hB * 3 - 2, 0, 0, (w / 2) * 1.1, (h * 1.5) * 1.1);
             ctx.restore();
             ctx.save();
         }
 
         if (this.type == TYPE_OLD) {
-            ctx.transform(-1,0.5,0,1,baseOffsetL + (side * 16.75 / 8) - sB / 16,baseOffsetT + (side * 6 / 8) - sB / 4);
-            ctx.drawImage(img,hB * 11 + 1,hB * 5 + 1,hB - 2,hB * 3 - 2,0,0,w * 0.5,h * 1.5);
+            ctx.transform(-1, 0.5, 0, 1, baseOffsetL + (side * 16.75 / 8) - sB / 16, baseOffsetT + (side * 6 / 8) - sB / 4);
+            ctx.drawImage(img, hB * 11 + 1, hB * 5 + 1, hB - 2, hB * 3 - 2, 0, 0, w * 0.5, h * 1.5);
             ctx.restore();
             ctx.save();
 
-            ctx.transform(1,0.5,-1,0.5,baseOffsetL + (side * 13 / 8) + sB / 8,baseOffsetT + (side * 4 / 8));
-            ctx.drawImage(img,hB * 11 + 1,hB * 4 + 1,sB * 3 - 2,hB - 2,0,0,w / 2,w / 2);
+            ctx.transform(1, 0.5, -1, 0.5, baseOffsetL + (side * 13 / 8) + sB / 8, baseOffsetT + (side * 4 / 8));
+            ctx.drawImage(img, hB * 11 + 1, hB * 4 + 1, sB * 3 - 2, hB - 2, 0, 0, w / 2, w / 2);
             ctx.restore();
             ctx.save();
         }
         else if (this.isAlex) {
-            ctx.transform(1,-0.5,0,1,baseOffsetL + (side * 13 / 8) + sB / 8 - sB / 16,baseOffsetT + (side * 7.5 / 8));
-            ctx.drawImage(img,hB * 9 + 1,hB * 13 + 1,sB * 3 - 2,hB * 3 - 2,0,0,w * 3 / 8,h * 1.5);
+            ctx.transform(1, -0.5, 0, 1, baseOffsetL + (side * 13 / 8) + sB / 8 - sB / 16, baseOffsetT + (side * 7.5 / 8));
+            ctx.drawImage(img, hB * 9 + 1, hB * 13 + 1, sB * 3 - 2, hB * 3 - 2, 0, 0, w * 3 / 8, h * 1.5);
             ctx.restore();
             ctx.save();
 
-            ctx.transform(1,-0.5,1,0.5,baseOffsetL + (side * 10 / 8) - sB / 2.5,baseOffsetT + (side * 6 / 8) - sB / 4);
-            ctx.drawImage(img,hB * 9 + 1,hB * 12 + 1,sB * 3 - 2,hB - 2,0,0,w * 3 / 8,w / 2);
+            ctx.transform(1, -0.5, 1, 0.5, baseOffsetL + (side * 10 / 8) - sB / 2.5, baseOffsetT + (side * 6 / 8) - sB / 4);
+            ctx.drawImage(img, hB * 9 + 1, hB * 12 + 1, sB * 3 - 2, hB - 2, 0, 0, w * 3 / 8, w / 2);
             ctx.restore();
             ctx.save();
 
-            ctx.transform(1,-0.5,0,1,baseOffsetL + (side * 13 / 8) + sB / 8,baseOffsetT + (side * 7.5 / 8) - sB * 0.667);
-            ctx.drawImage(img,hB * 13 + 1,hB * 13 + 1,sB * 3 - 2,hB * 3 - 2,0,0,(w * 3 / 8) * 1.1,(h * 1.5) * 1.1);
+            ctx.transform(1, -0.5, 0, 1, baseOffsetL + (side * 13 / 8) + sB / 8, baseOffsetT + (side * 7.5 / 8) - sB * 0.667);
+            ctx.drawImage(img, hB * 13 + 1, hB * 13 + 1, sB * 3 - 2, hB * 3 - 2, 0, 0, (w * 3 / 8) * 1.1, (h * 1.5) * 1.1);
             ctx.restore();
             ctx.save();
 
-            ctx.transform(1,-0.5,1,0.5,baseOffsetL + (side * 10 / 8) - sB * 0.75,baseOffsetT + (side * 5 / 8) - sB / 8);
-            ctx.drawImage(img,hB * 13 + 1,hB * 12 + 1,sB * 3 - 2,hB - 2,0,0,(w * 3 / 8) * 1.1,(w / 2) * 1.1);
+            ctx.transform(1, -0.5, 1, 0.5, baseOffsetL + (side * 10 / 8) - sB * 0.75, baseOffsetT + (side * 5 / 8) - sB / 8);
+            ctx.drawImage(img, hB * 13 + 1, hB * 12 + 1, sB * 3 - 2, hB - 2, 0, 0, (w * 3 / 8) * 1.1, (w / 2) * 1.1);
             ctx.restore();
             ctx.save();
         } else {
-            ctx.transform(1,-0.5,0,1,baseOffsetL + (side * 13 / 8) + sB / 8 - sB / 16,baseOffsetT + (side * 7.5 / 8));
-            ctx.drawImage(img,hB * 9 + 1,hB * 13 + 1,hB - 2,hB * 3 - 2,0,0,w / 2,h * 1.5);
+            ctx.transform(1, -0.5, 0, 1, baseOffsetL + (side * 13 / 8) + sB / 8 - sB / 16, baseOffsetT + (side * 7.5 / 8));
+            ctx.drawImage(img, hB * 9 + 1, hB * 13 + 1, hB - 2, hB * 3 - 2, 0, 0, w / 2, h * 1.5);
             ctx.restore();
             ctx.save();
 
-            ctx.transform(1,-0.5,1,0.5,baseOffsetL + (side * 10 / 8) - sB / 2.5,baseOffsetT + (side * 6 / 8) - sB / 4);
-            ctx.drawImage(img,hB * 9 + 1,hB * 12 + 1,hB - 2,hB - 2,0,0,w / 2,w / 2);
+            ctx.transform(1, -0.5, 1, 0.5, baseOffsetL + (side * 10 / 8) - sB / 2.5, baseOffsetT + (side * 6 / 8) - sB / 4);
+            ctx.drawImage(img, hB * 9 + 1, hB * 12 + 1, hB - 2, hB - 2, 0, 0, w / 2, w / 2);
             ctx.restore();
             ctx.save();
 
-            ctx.transform(1,-0.5,0,1,baseOffsetL + (side * 13 / 8) + sB / 8,baseOffsetT + (side * 7.5 / 8) - sB * 0.667);
-            ctx.drawImage(img,hB * 13 + 1,hB * 13 + 1,hB - 2,hB * 3 - 2,0,0,(w / 2) * 1.1,(h * 1.5) * 1.1);
+            ctx.transform(1, -0.5, 0, 1, baseOffsetL + (side * 13 / 8) + sB / 8, baseOffsetT + (side * 7.5 / 8) - sB * 0.667);
+            ctx.drawImage(img, hB * 13 + 1, hB * 13 + 1, hB - 2, hB * 3 - 2, 0, 0, (w / 2) * 1.1, (h * 1.5) * 1.1);
             ctx.restore();
             ctx.save();
 
-            ctx.transform(1,-0.5,1,0.5,baseOffsetL + (side * 9 / 8) + sB / 8,baseOffsetT + (side * 5 / 8) - sB / 8);
-            ctx.drawImage(img,hB * 13 + 1,hB * 12 + 1,hB - 2,hB - 2,0,0,(w / 2) * 1.1,(w / 2) * 1.1);
+            ctx.transform(1, -0.5, 1, 0.5, baseOffsetL + (side * 9 / 8) + sB / 8, baseOffsetT + (side * 5 / 8) - sB / 8);
+            ctx.drawImage(img, hB * 13 + 1, hB * 12 + 1, hB - 2, hB - 2, 0, 0, (w / 2) * 1.1, (w / 2) * 1.1);
             ctx.restore();
             ctx.save();
         }
 
-        ctx.transform(1,-0.5,0,1,baseOffsetL + side * 0.75,baseOffsetT + side * 11 / 8);
-        ctx.drawImage(img,hB * 5 + 1,hB * 5 + 1,hB * 2 - 2,hB * 3 - 2,0,0,w,h * 1.5);
+        ctx.transform(1, -0.5, 0, 1, baseOffsetL + side * 0.75, baseOffsetT + side * 11 / 8);
+        ctx.drawImage(img, hB * 5 + 1, hB * 5 + 1, hB * 2 - 2, hB * 3 - 2, 0, 0, w, h * 1.5);
         ctx.restore();
         ctx.save();
 
-        ctx.transform(1,0.5,0,1,baseOffsetL + side * 0.25 + sB / 2,baseOffsetT + side * 9.180 / 8);
-        ctx.drawImage(img,hB * 4 + 1,hB * 5 + 1,hB - 2,hB * 3 - 2,0,0,w / 2,h * 1.5);
+        ctx.transform(1, 0.5, 0, 1, baseOffsetL + side * 0.25 + sB / 2, baseOffsetT + side * 9.180 / 8);
+        ctx.drawImage(img, hB * 4 + 1, hB * 5 + 1, hB - 2, hB * 3 - 2, 0, 0, w / 2, h * 1.5);
         ctx.restore();
         ctx.save();
 
