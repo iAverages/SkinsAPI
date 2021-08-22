@@ -12,8 +12,8 @@ I made this a while ago so the code isn't that great.
 - [x] Get skin
 - [x] Get head
 - [x] Support for second layer of skin
-- [ ] Get 3d Model of skin
-- [ ] Get 3d Model of head
+- [x] Get 3d Model of skin
+- [x] Get 3d Model of head
 - [ ] Proxy requests when being rate limited
 
 ## Usage
@@ -35,4 +35,4 @@ Example: `https://skins.danielraybone.com/head/jeb_?width=230&height=100`
 
 If a invalid name or UUID is given, steve will be returned instead.
 
-You can also add `?return=base64` as a parameter to have a base64 version of the image returned.
+You can also add `?return=base64` as a parameter to have a base64 version of the image returned. (Only /skin route)
