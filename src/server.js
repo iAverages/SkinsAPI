@@ -1,46 +1,38 @@
+require("dotenv").config({ path: __dirname + "../.env" });
 const express = require("express");
-const helmet = require('helmet');
-const rateLimit = require("express-rate-limit");
-const morgan = require("morgan");
-const path = require("path");
-const rfs = require('rotating-file-stream');
-const log = require("./modules/logger");
-const { skin, head, _3d } = require("./routes");
+const middleware = require("./middleware");
+const log = require("./helpers/logger");
+const ApiError = require("./helpers/ApiError");
+const errorHandler = require("./middleware/error");
+const router = require("./routes");
+const database = require("./database/mongo");
 const app = express();
-require("dotenv").config();
-const port = process.env.PORT || 3000
-const limiter = rateLimit({
-    windowMs: 10 * 60 * 1000, // 10 minutes
-    max: 2000 // limit each IP to 100 requests per windowMs
-});
-
-const accessLogStream = rfs.createStream('access.log', {
-    interval: '1d',
-    path: path.join(__dirname, '../logs')
-})
+const port = process.env.PORT || 3000;
+let server;
 
 app.set("trust proxy", true);
-app.use([
-    limiter,
-    morgan("common", { stream: accessLogStream }), // Log everything to file
-    morgan("dev", { skip: (req, res) => { return res.statusCode < 400 }}), // Log errors to console
-    helmet({ contentSecurityPolicy: false, }),
-])
+app.use(middleware);
+app.use("/", router);
 
-app.get("/", async (req, res) => res.redirect(302, process.env.REDIRECT));
+// 404 Handler
+app.use((_, __, next) => next(new ApiError(404, "404 Not found")));
 
-// Routes
-app.use("/skin", skin);
-app.use("/head", head);
-app.use("/3d", _3d);
+// Error handler
+app.use(errorHandler);
 
-app.use((error, req, res, next) => {
-    const { statusCode } = error;
-    log.error(err);
-    res.status(statusCode).json({
-        success: false,
-        message: "An error has occuered."
+// Attempt to connect to database, on sucess start express
+// Close on error
+database
+    .then(() => {
+        server = app.listen(port, () => log.info(`Listening on port ${port}`));
     })
-});
+    .catch(() => {
+        process.exit(1);
+    });
 
-app.listen(port, log.info(`Listening on port ${port}`));
+["SIGTERM", "SIGINT"].forEach((event) => {
+    process.on(event, () => {
+        server?.close();
+        process.exit(1);
+    });
+});
