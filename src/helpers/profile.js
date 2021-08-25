@@ -29,11 +29,12 @@ async function getMojangProfile(user) {
     const profile = (await axios.get(sessionApi + uuid)).data;
     // Mojang returns nothing on this endpoint if no user...
     if (!profile) throw new ApiError(400, "No user found");
-    return profile.data;
+    log.debug(`Mojang Profile - Found profile for ${profile.name} (${profile.id})`);
+    return profile;
 }
 
 async function getProfile(uuid) {
-    if (!isUUID(uuid)) throw new ApiError(401, "Invalid UUID");
+    if (!isUUID(uuid)) throw new ApiError(400, "Invalid UUID");
     uuid = uuid.replaceAll("-", ""); // Store all uuids without dashes, to prevent dupes and other issues
 
     // Check for profile locally
@@ -99,12 +100,38 @@ async function getUUID(name) {
     }
 }
 
-async function getSkin(uuid) {}
+async function getSkin64(uuid) {
+    if (!isUUID(uuid)) throw new ApiError(400, "Invalid UUID");
+    const profile = await getProfile(uuid);
+    return profile.assets.skin.base64;
+}
+
+async function getHead64(uuid, width, height, overlay = true) {
+    const profile = await getProfile(uuid);
+    const skinBuffer = new Buffer.from(profile.assets.skin.base64, "base64");
+    const bottom = await Jimp.read(skinBuffer);
+
+    // Crop the image to only the head.
+    bottom.crop(8, 8, 8, 8);
+
+    // Add second lay of ski
+    if (overlay) {
+        const top = await Jimp.read(skinBuffer);
+        top.crop(40, 8, 8, 8);
+        bottom.composite(top, 0, 0);
+    }
+
+    bottom.resize(width, height, Jimp.RESIZE_NEAREST_NEIGHBOR);
+
+    return await bottom.getBase64Async(Jimp.AUTO);
+}
 
 module.exports = {
     steveDefault,
     getProfile,
     getUUID,
+    getSkin64,
+    getHead64,
 };
 // async function getIfExistsMongo(name) {
 //     const data = isUUID(name)
