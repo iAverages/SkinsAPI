@@ -9,8 +9,8 @@ module.exports = (req, _, next) => {
     const height = Math.min(1000, check(q?.height) ? +q.height : width);
 
     req.options = {
-        base64: q.base64?.toLowerCase() === "true",
-        overlay: q.overlay ? q.overlay.toLowerCase() === "true" : true, // overlay defaults to true
+        base64: isTrue(q.base64),
+        overlay: q.overlay ? isTrue(q.overlay) : true, // overlay defaults to true
         width: width,
         height: height,
     };
@@ -18,3 +18,4 @@ module.exports = (req, _, next) => {
 };
 
 const check = (n) => !(n === null || +n <= 0 || isNaN(+n));
+const isTrue = (n) => n?.toLowerCase() === "true";
