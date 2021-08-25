@@ -34,5 +34,5 @@ module.exports = (error, req, res, __) => {
     }
 
     res.set("X-Error", errMessage);
-    handler ? handler(res, error) : reqHandler.error(res, errMessage);
+    handler ? handler(res, error) : reqHandler.custom(res, error.status, errMessage);
 };
