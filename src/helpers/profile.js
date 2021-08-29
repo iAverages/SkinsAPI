@@ -5,6 +5,7 @@ const ApiError = require("./ApiError");
 const { isUUID } = require("./uuidv4");
 const ProfileDB = require("../database/schema/profile");
 const bodyParts = require("./bodySection");
+const MinecraftSkin = require("./3dRender");
 const mojangApi = "https://api.mojang.com/users/profiles/minecraft/";
 const sessionApi = "https://sessionserver.mojang.com/session/minecraft/profile/";
 
@@ -20,6 +21,11 @@ const steveDefault = {
         },
     },
 };
+
+async function getBase64FromURL(url) {
+    const binary = (await axios.get(url, { responseType: "arraybuffer" })).data;
+    return Buffer.from(binary, "binary").toString("base64");
+}
 
 async function getMojangProfile(user) {
     let uuid = user.replace("-", ""); // Store all uuids without dashes, to prevent dupes
@@ -228,6 +234,18 @@ async function getBody64(uuid, width = 160, height = 320, overlay = true) {
     return base.getBase64Async(Jimp.AUTO);
 }
 
+async function get3DSkin(name) {
+    const skinB64 = await getSkin64(name);
+    const skin = new MinecraftSkin(Buffer.from(skinB64, "base64"), false, 120);
+    return skin.getRender();
+}
+
+async function get3DHead(name) {
+    const skinB64 = await getSkin64(name);
+    const skin = new MinecraftSkin(Buffer.from(skinB64, "base64"), false, 120);
+    return skin.getHead();
+}
+
 module.exports = {
     steveDefault,
     getProfile,
@@ -235,9 +253,6 @@ module.exports = {
     getSkin64,
     getHead64,
     getBody64,
+    get3DSkin,
+    get3DHead,
 };
-
-async function getBase64FromURL(url) {
-    const binary = (await axios.get(url, { responseType: "arraybuffer" })).data;
-    return Buffer.from(binary, "binary").toString("base64");
-}
