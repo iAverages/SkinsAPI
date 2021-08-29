@@ -4,7 +4,7 @@ const Jimp = require("jimp");
 const ApiError = require("./ApiError");
 const { isUUID } = require("./uuidv4");
 const ProfileDB = require("../database/schema/profile");
-
+const bodyParts = require("./bodySection");
 const mojangApi = "https://api.mojang.com/users/profiles/minecraft/";
 const sessionApi = "https://sessionserver.mojang.com/session/minecraft/profile/";
 
@@ -100,6 +100,20 @@ async function getUUID(name) {
     }
 }
 
+function useSecondLayer(skin) {
+    // Fix for skins that are using the old format (before second layer was added / whatever mojang done)
+    // The left arm and leg are both lower and it seems at one point only the right arm was set
+    // Then copied over to the left and flipped. Not sure if this is the case but it seems like it.
+    const newFormat = skin.bitmap.height === 64;
+
+    // A "fix" specifically for Notchs skin but may apply to others.
+    // Since you can set the areas that are not used (i.e Notchs skin is black instead
+    // of transparent)
+    const secondLayer = skin.hasAlpha();
+
+    return newFormat && secondLayer;
+}
+
 async function getSkin64(uuid) {
     if (!isUUID(uuid)) throw new ApiError(400, "Invalid UUID");
     const profile = await getProfile(uuid);
@@ -124,6 +138,93 @@ async function getHead64(uuid, width, height, overlay = true) {
     bottom.resize(width, height, Jimp.RESIZE_NEAREST_NEIGHBOR);
 
     return await bottom.getBase64Async(Jimp.AUTO);
+
+async function getBody64(uuid, width = 160, height = 320, overlay = true) {
+    const profile = await getProfile(uuid);
+    const skinBuffer = new Buffer.from(profile.assets.skin.base64, "base64");
+    const isSlim = profile.assets.skin.slim;
+    const skin = await Jimp.read(skinBuffer);
+    const applySecondLayer = useSecondLayer(skin);
+
+    const base = new Jimp(16, 32);
+    const head = skin.clone();
+    const torso = skin.clone();
+    const lArm = skin.clone();
+    const rArm = skin.clone();
+    const lLeg = skin.clone();
+    const rLeg = skin.clone();
+
+    head.crop(...bodyParts.firstLayer.head.front);
+    torso.crop(...bodyParts.firstLayer.torso.front);
+
+    // See comment in useSecondLayer function
+    const lArmPoints = applySecondLayer
+        ? [...bodyParts.firstLayer.arms.left.front]
+        : [...bodyParts.firstLayer.arms.right.front];
+    const lLegPoints = applySecondLayer
+        ? [...bodyParts.firstLayer.legs.left.front]
+        : [...bodyParts.firstLayer.legs.right.front];
+
+    const rArmPoints = [...bodyParts.firstLayer.arms.right.front];
+
+    // Correction for slim skin arms;
+    if (isSlim) {
+        lArmPoints[2] = lArmPoints[2] - 1;
+        rArmPoints[2] = rArmPoints[2] - 1;
+    }
+
+    lArm.crop(...lArmPoints);
+    rArm.crop(...rArmPoints);
+    lLeg.crop(...lLegPoints);
+    rLeg.crop(...bodyParts.firstLayer.legs.right.front);
+
+    !applySecondLayer && lArm.flip(true, false) && lLeg.flip(true, false);
+
+    base.composite(head, 4, 0);
+    base.composite(torso, 4, 8);
+    base.composite(lArm, 12, 8);
+    base.composite(rArm, isSlim ? 1 : 0, 8);
+    base.composite(lLeg, 8, 20);
+    base.composite(rLeg, 4, 20);
+
+    if (overlay && applySecondLayer) {
+        try {
+            const head2 = skin.clone();
+            const torso2 = skin.clone();
+            const lArm2 = skin.clone();
+            const rArm2 = skin.clone();
+            const lLeg2 = skin.clone();
+            const rLeg2 = skin.clone();
+
+            const lArmPoints2 = [...bodyParts.secondLayer.arms.left.front];
+            const rArmPoints2 = [...bodyParts.secondLayer.arms.right.front];
+
+            if (isSlim) {
+                lArmPoints2[2] = lArmPoints2[2] - 1;
+                rArmPoints2[2] = rArmPoints2[2] - 1;
+            }
+
+            head2.crop(...bodyParts.secondLayer.head.front);
+            torso2.crop(...bodyParts.secondLayer.torso.front);
+            lArm2.crop(...lArmPoints2);
+            rArm2.crop(...rArmPoints2);
+            lLeg2.crop(...bodyParts.secondLayer.legs.left.front);
+            rLeg2.crop(...bodyParts.secondLayer.legs.right.front);
+
+            base.composite(head2, 4, 0);
+            base.composite(torso2, 4, 8);
+            base.composite(lArm2, 12, 8);
+            base.composite(rArm2, isSlim ? 1 : 0, 8);
+            base.composite(lLeg2, 4, 20);
+            base.composite(rLeg2, 8, 20);
+        } catch (e) {
+            log.debug(`2D Render - ${uuid} had no second layer.`);
+        }
+    }
+
+    base.resize(width, height, Jimp.RESIZE_NEAREST_NEIGHBOR);
+
+    return base.getBase64Async(Jimp.AUTO);
 }
 
 module.exports = {
@@ -132,6 +233,7 @@ module.exports = {
     getUUID,
     getSkin64,
     getHead64,
+    getBody64,
 };
 
 async function getBase64FromURL(url) {
