@@ -26,13 +26,15 @@ module.exports = (error, req, res, __) => {
     } catch (e) {}
 
     let errMessage = error.message;
+    let errStatus = error.status;
     // Normal error, not custom ApiError. Meaning it was a server
     // error that wasn't handled by the controller
     if (!error.status) {
+        errStatus = 500;
         error.stack ? log.error(error.stack) : log.error(error);
         errMessage = "An unknown error occurred.";
     }
 
     res.set("X-Error", errMessage);
-    handler ? handler(res, error) : reqHandler.custom(res, error.status, errMessage);
+    handler ? handler(res, error) : reqHandler.custom(res, errStatus, errMessage);
 };
