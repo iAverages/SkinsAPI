@@ -123,15 +123,15 @@ async function getSkin64(uuid) {
 async function getHead64(uuid, width, height, overlay = true) {
     const skinBuffer = new Buffer.from(await getSkin64(uuid), "base64");
     const bottom = await Jimp.read(skinBuffer);
+    const applySecondLayer = useSecondLayer(bottom);
 
     // Crop the image to only the head.
     bottom.crop(...bodyParts.firstLayer.head.front);
 
     // Add second lay of skin
-    if (overlay) {
+    if (overlay && applySecondLayer) {
         const top = await Jimp.read(skinBuffer);
-        top.crop(40, 8, 8, 8);
-        // // bottom.crop(...bodyParts.secondLayer.head.front);
+        top.crop(...bodyParts.secondLayer.head.front);
         bottom.composite(top, 0, 0);
     }
 
