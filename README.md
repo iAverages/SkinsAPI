@@ -2,7 +2,7 @@
 
 A simple and fast Minecraft avatar API built with JS, ExpressJs and MongoDB.
 
-I made this a while ago so the code isn't that great.
+A public endpoint for this can be found at `https://skins.danielraybone.com/`.
 
 ## Features
 
@@ -11,28 +11,43 @@ I made this a while ago so the code isn't that great.
 - [x] Request custom size
 - [x] Get skin
 - [x] Get head
+- [x] Get 2d full front body of skin
+- [x] Get 2d bust of skin
+- [x] Get cape
+- [x] Get profile of player (See example below)
 - [x] Support for second layer of skin
 - [x] Get 3d Model of skin
 - [x] Get 3d Model of head
 - [ ] Proxy requests when being rate limited
 
-## Usage
+## Endpoints
 
-A public endpoint for this can be found at `https://skins.danielraybone.com/`.  
-*name can be a uuid*
+### Global info
 
-`/head/:name` - Request the head for a user.  
-`/skin/:name` - Request the raw skin for a user.
-`/3d/skin/:name` - Request the 3D skin for a user.
-`/3d/head/:name` - Request the 3D head for a user.
+All API requests are GET requests.  
+:name - Can be a players username (iAverage) or UUID (1b8f18cf-7fb6-4a7a-8c25-c1ef296459f2) with or without dashes (-)  
+If a invalid name or UUID is given, steve will be returned instead.  
+The second layer of the skin is enabled by default and can be disabled by using the query string params `?overlay=false`
+When a skin needs to be rechecked for updated, the api will return the skin in the cache. It will also begin to check for a updated skin.
 
-All endpoints (excluding Skin and 3D) can return a custom size. Append ?width=\<size in px> to the request. This can also be done with height. (If only the width/height is given, both are set to the same value given)  
-By default, the head endpoint returns a 300x300 px head.  
+### v1
 
-Example: `https://skins.danielraybone.com/head/jeb_?width=100`  
-Example: `https://skins.danielraybone.com/head/jeb_?height=100`  
-Example: `https://skins.danielraybone.com/head/jeb_?width=230&height=100`  
+`/v1/profile/:name` - Returns the players profile.  
+`/v1/skin/:name` - Returns the skin of the player.  
+`/v1/head/:name` - Returns the head of the player.  
+`/v1/body/:name` - Returns the 2d version of the players full body, as if you was facing them in game. [Example](https://skins.danielraybone.com/v1/body/iAverage)  
+`/v1/cape/:name` - Returns the users first cape (Doesn't include Optifine capes)
+`/v1/bust/:name` - Returns the bust of the players skin (Top half of the skin) [Example](https://skins.danielraybone.com/v1/bust/iAverage)  
+`/v1/render/body/:name` - Returns a 3d render of the players full body. [Example](https://skins.danielraybone.com/v1/render/body/iAverage)  
+`/v1/render/head/:name` - Returns a 3d render of the players head. [Example](https://skins.danielraybone.com/v1/render/head/iAverage)
 
-If a invalid name or UUID is given, steve will be returned instead.
+### v1 - Query string params
 
-You can also add `?return=base64` as a parameter to have a base64 version of the image returned. (Only /head route)
+`?overlay=true|false` - Option to disable the players second layer. Currently only works on 2d renders (head, body, bust).
+`?base64=true` - Option to return a base64 version of the image. Applies to routes returning an image.
+`?width=300` - Custom return width in pixels. Max `1000`. Currently doesn't work with 3d renders.
+`?height=300` - Custom return height in pixels. Max `1000`. Currently doesn't work with 3d renders.
+
+### v1 - Headers
+
+`X-Error` - If any errors or problems occur while processing the request, this header will be set. All routes will return some info, steve skin/profile or a previously cached skin/profile.
