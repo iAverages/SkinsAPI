@@ -121,23 +121,24 @@ async function getSkin64(uuid) {
 }
 
 async function getHead64(uuid, width, height, overlay = true) {
-    const profile = await getProfile(uuid);
-    const skinBuffer = new Buffer.from(profile.assets.skin.base64, "base64");
+    const skinBuffer = new Buffer.from(await getSkin64(uuid), "base64");
     const bottom = await Jimp.read(skinBuffer);
 
     // Crop the image to only the head.
-    bottom.crop(8, 8, 8, 8);
+    bottom.crop(...bodyParts.firstLayer.head.front);
 
-    // Add second lay of ski
+    // Add second lay of skin
     if (overlay) {
         const top = await Jimp.read(skinBuffer);
         top.crop(40, 8, 8, 8);
+        // // bottom.crop(...bodyParts.secondLayer.head.front);
         bottom.composite(top, 0, 0);
     }
 
     bottom.resize(width, height, Jimp.RESIZE_NEAREST_NEIGHBOR);
 
-    return await bottom.getBase64Async(Jimp.AUTO);
+    return bottom.getBase64Async(Jimp.AUTO);
+}
 
 async function getBody64(uuid, width = 160, height = 320, overlay = true) {
     const profile = await getProfile(uuid);
