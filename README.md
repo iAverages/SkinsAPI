@@ -37,7 +37,6 @@ When a skin needs to be rechecked for updated, the api will return the skin in t
 `/v1/head/:name` - Returns the head of the player.  
 `/v1/body/:name` - Returns the 2d version of the players full body, as if you was facing them in game. [Example](https://skins.danielraybone.com/v1/body/iAverage)  
 `/v1/cape/:name` - Returns the users first cape (Doesn't include Optifine capes)
-`/v1/bust/:name` - Returns the bust of the players skin (Top half of the skin) [Example](https://skins.danielraybone.com/v1/bust/iAverage)  
 `/v1/render/body/:name` - Returns a 3d render of the players full body. [Example](https://skins.danielraybone.com/v1/render/body/iAverage)  
 `/v1/render/head/:name` - Returns a 3d render of the players head. [Example](https://skins.danielraybone.com/v1/render/head/iAverage)
 
