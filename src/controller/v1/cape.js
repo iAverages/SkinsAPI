@@ -1,7 +1,7 @@
 const { getCape64, getUUID } = require("../../helpers/profile");
 const { isUUID } = require("../../helpers/uuidv4");
 
-module.exports.getBody = async (req, res) => {
+module.exports.getCape = async (req, res) => {
     const name = req.params.name;
     const uuid = isUUID(name) ? name : await getUUID(name);
     const cape64 = await getCape64(uuid);
