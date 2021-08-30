@@ -39,19 +39,12 @@ async function getMojangProfile(user) {
     return profile;
 }
 
-async function getProfile(uuid) {
-    if (!isUUID(uuid)) throw new ApiError(400, "Invalid UUID");
-    uuid = uuid.replaceAll("-", ""); // Store all uuids without dashes, to prevent dupes and other issues
-
-    // Check for profile locally
-    const profile = await ProfileDB.findById(uuid);
-    if (profile?.uuid) {
-        log.debug(`Profile lookup - Found profile for ${profile.name} (${profile.uuid}) locally`);
-        // TODO: schedule check for reevaluation
-        return profile;
-    }
-
-    // If not locally, get from mojang and cache
+/**
+ * Internal function to get and construct a profile. Ignores cache and doesnt save to cache.
+ * @param {string} uuid UUID of the player
+ * @returns {Promise<object>} Players profile
+ */
+async function _getProfile(uuid) {
     const mojangNameUUID = await getMojangProfile(uuid);
     const mojangProfile = JSON.parse(Buffer.from(mojangNameUUID.properties[0].value, "base64"));
     const mojangTextures = mojangProfile.textures;
@@ -76,8 +69,40 @@ async function getProfile(uuid) {
         };
     }
 
+    return newProfile;
+}
+
+/**
+ * Function to get a players profile by UUID.
+ * @param {string} uuid UUID of the player
+ * @returns {Promise<object>} Player profile
+ */
+async function getProfile(uuid) {
+    if (!isUUID(uuid)) throw new ApiError(400, "Invalid UUID");
+    uuid = uuid.replaceAll("-", ""); // Store all uuids without dashes, to prevent dupes and other issues
+
+    // Check for profile locally
+    const profile = await ProfileDB.findById(uuid);
+    if (profile?.uuid) {
+        log.debug(`Profile lookup - Found profile for ${profile.name} (${profile.uuid}) locally`);
+
+        // Check if skin needs updating. Next request will have updated skin.
+        checkForUpdate(profile);
+        return profile;
+    }
+
+    // If not locally, get from mojang and cache
+    const newProfile = await _getProfile(uuid);
+
     new ProfileDB(newProfile).save();
     return newProfile;
+}
+
+async function checkForUpdate(profile) {
+    if (profile.time + 21600000 > Date.now()) return;
+    log.debug(`Refreshing skin for ${profile.name} (${profile.uuid})`);
+    const newProfile = await _getProfile(profile.uuid);
+    await ProfileDB.findByIdAndUpdate(profile.uuid, newProfile);
 }
 
 async function getUUID(name) {
