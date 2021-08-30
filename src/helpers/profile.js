@@ -126,6 +126,7 @@ async function getSkin64(uuid) {
     return profile.assets.skin.base64;
 }
 
+// TODO: Optimize the performance of these 2d renders, they are slow.
 async function getHead64(uuid, width, height, overlay = true) {
     const skinBuffer = new Buffer.from(await getSkin64(uuid), "base64");
     const bottom = await Jimp.read(skinBuffer);
@@ -143,7 +144,7 @@ async function getHead64(uuid, width, height, overlay = true) {
 
     bottom.resize(width, height, Jimp.RESIZE_NEAREST_NEIGHBOR);
 
-    return bottom.getBase64Async(Jimp.AUTO);
+    return bottom.getBase64Async(Jimp.MIME_PNG);
 }
 
 async function getBody64(uuid, width = 160, height = 320, overlay = true) {
@@ -231,7 +232,7 @@ async function getBody64(uuid, width = 160, height = 320, overlay = true) {
 
     base.resize(width, height, Jimp.RESIZE_NEAREST_NEIGHBOR);
 
-    return base.getBase64Async(Jimp.AUTO);
+    return base.getBase64Async(Jimp.MIME_PNG);
 }
 
 async function get3DSkin(name) {
@@ -246,6 +247,12 @@ async function get3DHead(name) {
     return skin.getHead();
 }
 
+async function getCape64(uuid) {
+    if (!isUUID(uuid)) throw new ApiError(400, "Invalid UUID");
+    const profile = await getProfile(uuid);
+    return profile.assets.cape.base64;
+}
+
 module.exports = {
     steveDefault,
     getProfile,
@@ -255,4 +262,5 @@ module.exports = {
     getBody64,
     get3DSkin,
     get3DHead,
+    getCape64,
 };
