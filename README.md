@@ -12,7 +12,6 @@ A public endpoint for this can be found at `https://skins.danielraybone.com/`.
 - [x] Get skin
 - [x] Get head
 - [x] Get 2d full front body of skin
-- [x] Get 2d bust of skin
 - [x] Get cape
 - [x] Get profile of player (See example below)
 - [x] Support for second layer of skin
@@ -42,10 +41,10 @@ When a skin needs to be rechecked for updated, the api will return the skin in t
 
 ### v1 - Query string params
 
-`?overlay=true|false` - Option to disable the players second layer. Currently only works on 2d renders (head, body, bust).
-`?base64=true` - Option to return a base64 version of the image. Applies to routes returning an image.
-`?width=300` - Custom return width in pixels. Max `1000`. Currently doesn't work with 3d renders.
-`?height=300` - Custom return height in pixels. Max `1000`. Currently doesn't work with 3d renders.
+`?overlay=true|false` - Option to disable the players second layer. Currently only works on 2d renders (head, body).  
+`?base64=true` - Option to return a base64 version of the image. Applies to routes returning an image.  
+`?width=300` - Custom return width in pixels. Max `1000`. Currently doesn't work with 3d renders.  
+`?height=300` - Custom return height in pixels. Max `1000`. Currently doesn't work with 3d renders.  
 
 ### v1 - Headers
 
