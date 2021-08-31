@@ -152,8 +152,14 @@ async function getSkin64(uuid) {
 }
 
 // TODO: Optimize the performance of these 2d renders, they are slow.
-async function getHead64(uuid, width, height, overlay = true) {
-    const skinBuffer = new Buffer.from(await getSkin64(uuid), "base64");
+/**
+ * Internal method to render a head.
+ * @param {*} skinBuffer
+ * @param {*} width
+ * @param {*} height
+ * @param {*} overlay
+ */
+async function renderHead64(skinBuffer, width, height, overlay = true) {
     const bottom = await Jimp.read(skinBuffer);
     const applySecondLayer = useSecondLayer(bottom);
 
@@ -172,10 +178,12 @@ async function getHead64(uuid, width, height, overlay = true) {
     return bottom.getBase64Async(Jimp.MIME_PNG);
 }
 
-async function getBody64(uuid, width = 160, height = 320, overlay = true) {
-    const profile = await getProfile(uuid);
-    const skinBuffer = new Buffer.from(profile.assets.skin.base64, "base64");
-    const isSlim = profile.assets.skin.slim;
+async function getHead64(uuid, width, height, overlay = true) {
+    const skinBuffer = new Buffer.from(await getSkin64(uuid), "base64");
+    return renderHead64(skinBuffer, width, height, overlay);
+}
+
+async function renderBody64(skinBuffer, width = 160, height = 320, isSlim = false, overlay = true) {
     const skin = await Jimp.read(skinBuffer);
     const applySecondLayer = useSecondLayer(skin);
 
@@ -260,6 +268,13 @@ async function getBody64(uuid, width = 160, height = 320, overlay = true) {
     return base.getBase64Async(Jimp.MIME_PNG);
 }
 
+async function getBody64(uuid, width = 160, height = 320, overlay = true) {
+    const profile = await getProfile(uuid);
+    const skinBuffer = new Buffer.from(profile.assets.skin.base64, "base64");
+    const isSlim = profile.assets.skin.slim;
+    return renderBody64(skinBuffer, width, height, isSlim, overlay);
+}
+
 async function get3DSkin(name) {
     const skinB64 = await getSkin64(name);
     const skin = new MinecraftSkin(Buffer.from(skinB64, "base64"), false, 120);
@@ -288,4 +303,6 @@ module.exports = {
     get3DSkin,
     get3DHead,
     getCape64,
+    renderHead64,
+    renderBody64,
 };
