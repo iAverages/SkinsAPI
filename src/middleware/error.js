@@ -6,12 +6,11 @@ const MinecraftSkin = require("../helpers/3dRender");
 
 // Key is the route, value is the function to run if unknown error occurs on that route
 const steveOnErrorRouteHandlers = {
-    "/v1/profile": (_, res, error) => res.status(error.status ? error.status : 500).send(steveDefault),
+    "/v1/profile": (_, res, error) => res.send(steveDefault),
 
     "/v1/skin": (_, res, error) => {
         const img = Buffer.from(steveDefault.assets.skin.base64, "base64");
         res.set("Content-Type", "image/png");
-        res.status(error.status ? error.status : 500);
         res.send(img);
     },
 
@@ -23,7 +22,6 @@ const steveOnErrorRouteHandlers = {
         // substr to remove MIME type from start
         head64 = head64.substr(head64.indexOf(",") + 1);
         res.set("Content-Type", "image/png");
-        res.status(error.status ? error.status : 500);
         res.send(Buffer.from(head64, "base64"));
     },
 
@@ -35,7 +33,6 @@ const steveOnErrorRouteHandlers = {
         // substr to remove MIME type from start
         body64 = body64.substr(body64.indexOf(",") + 1);
         res.set("Content-Type", "image/png");
-        res.status(error.status ? error.status : 500);
         res.send(Buffer.from(body64, "base64"));
     },
 
@@ -50,7 +47,6 @@ const steveOnErrorRouteHandlers = {
             return;
         }
         res.set("Content-Type", "image/png");
-        res.status(error.status ? error.status : 500);
         res.send(render);
     },
 
@@ -63,7 +59,6 @@ const steveOnErrorRouteHandlers = {
             return;
         }
         res.set("Content-Type", "image/png");
-        res.status(error.status ? error.status : 500);
         res.send(render);
     },
 };
