@@ -31,7 +31,7 @@ When a skin needs to be rechecked for updated, the api will return the skin in t
 
 ### v1
 
-`/v1/profile/:name` - Returns the players profile.  
+`/v1/profile/:name` - Returns the players profile. [Example](https://skins.danielraybone.com/v1/profile/iAverage)  
 `/v1/skin/:name` - Returns the skin of the player.  
 `/v1/head/:name` - Returns the head of the player.  
 `/v1/body/:name` - Returns the 2d version of the players full body, as if you was facing them in game. [Example](https://skins.danielraybone.com/v1/body/iAverage)  
