@@ -27,7 +27,7 @@
         "fs": "0.0.2",
         "helmet": "^4.6.0",
         "jimp": "^0.16.1",
-        "mongoose": "^5.13.8",
+        "mongoose": "^6.0.5",
         "morgan": "^1.10.0",
         "rotating-file-stream": "^2.1.5"
     },
