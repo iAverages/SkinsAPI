@@ -29,7 +29,7 @@
         "jimp": "^0.16.1",
         "mongoose": "^5.13.8",
         "morgan": "^1.10.0",
-        "rotating-file-stream": "^2.1.5"
+        "rotating-file-stream": "^2.1.6"
     },
     "devDependencies": {
         "babel-eslint": "^10.1.0",
