@@ -106,6 +106,7 @@ async function checkForUpdate(profile) {
 }
 
 async function getUUID(name) {
+    if (name.startsWith('TEXTURE-')) return name
     if (isUUID(name)) return name;
 
     const user = await ProfileDB.findOne({ name });
@@ -146,7 +147,8 @@ function useSecondLayer(skin) {
 }
 
 async function getSkin64(uuid) {
-    if (!isUUID(uuid)) throw new ApiError(400, "Invalid UUID");
+    if (uuid.startsWith('TEXTURE-')) return getBase64FromURL(`http://textures.minecraft.net/texture/${uuid.replace('TEXTURE-', '')}`)
+    else if (!isUUID(uuid)) throw new ApiError(400, "Invalid UUID");
     const profile = await getProfile(uuid);
     return profile.assets.skin.base64;
 }
